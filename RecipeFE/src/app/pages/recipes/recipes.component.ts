@@ -15,7 +15,7 @@ import { RecipeidformatterPipe } from "../../pipes/recipeidformatter.pipe";
 export class RecipesComponent {
   recipes?: Recipe[];
 
-  searchterm = 'Chicken';
+  searchterm = '';
 
   constructor(private recipeService: RecipeService) {}
 

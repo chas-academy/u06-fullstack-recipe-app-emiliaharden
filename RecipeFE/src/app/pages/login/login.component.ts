@@ -14,12 +14,15 @@ export class LoginComponent {
 
   constructor(private auth: AuthService) {
     this.loginDetails = {
-      email: 'seb@seb.seb',
-      password: 'sebsebseb',
+      email: 'emi@emi.se',
+      password: 'larre123',
     };
   }
 
   login(){
     this.auth.loginUser(this.loginDetails);
+  }
+  logout(){
+    this.auth.logoutUser();
   }
 }
