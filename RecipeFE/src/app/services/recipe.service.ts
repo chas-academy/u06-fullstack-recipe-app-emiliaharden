@@ -14,31 +14,31 @@ export class RecipeService {
 
   private httpOptions = {
     headers: new HttpHeaders({
-      'accept':'application/json',
-      'Accept-Language':'en'
+      'accept': 'application/json',
+      'Accept-Language': 'en'
     })
   }
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // getRecipes(searchterm = "Chicken", cuisineType="British", mealType="Dinner"): Observable<any> {
   //   let url = this.baseUrl + "&q=" + searchterm + "&app_id=" + this.app_id + "&app_key=" + this.app_key + "&cuisine_type=" + cuisineType + "&mealType=" + mealType;
   //   return this.http.get<any>(url, this.httpOptions);
   // }
 
-  getRecipes(filter:FilterRecipes): Observable<any> {
+  getRecipes(filter: FilterRecipes): Observable<any> {
     let url = `${this.baseUrl}&app_id=${this.app_id}&app_key=${this.app_key}`
-    if(filter.searchterm){
-      url += `&q=${filter.searchterm}`;
+    if (filter.searchterm) {
+      url += `&q=${filter.searchterm}`
     }
-    if(filter.healthLabel){
-      url += `&health=${filter.healthLabel}`;
+    if (filter.healthLabel) {
+      url += `&health=${filter.healthLabel}`
     }
-    if(filter.cuisineType){
-      url += `&cuisine_type=${filter.cuisineType}`;
+    if (filter.cuisineType) {
+      url += `&cuisine_type=${filter.cuisineType}`
     }
-    if(filter.mealType){
-      url += `&meal_type=${filter.mealType}`;
+    if (filter.mealType) {
+      url += `&meal_type=${filter.mealType}`
     }
     url = encodeURI(url);
     return this.http.get(url, this.httpOptions);
@@ -48,7 +48,7 @@ export class RecipeService {
   getRecipe(recipeId: string): Observable<any> {
     let recipeUrl = `https://api.edamam.com/api/recipes/v2/`;
     let url = `${recipeUrl}${recipeId}?type=public&app_id=${this.app_id}&app_key=${this.app_key}`;
-    return this.http.get<any>(url,this.httpOptions);
+    return this.http.get<any>(url, this.httpOptions);
   }
 
 }

@@ -2,13 +2,14 @@
 
 
 <input type="text" [(ngModel)]="filter.searchterm">
+<button type="button" (click)="searchRecipe()">Get Recipes</button>
 
 
 
 @for(recipe of recipes; track recipe){
 <article>
     <h3>{{recipe.label}}</h3>
-    <img src="{{recipe.image}}" width="200"/>
+    <img src="{{recipe.image}}" width="200" />
     <p>Time to cook: {{recipe.totalTime}}</p>
     <p><a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">Go to recipe</a></p>
 </article>
@@ -17,22 +18,21 @@
 
 <div>
 
-<select name="mealType" [(ngModel)]="filter.mealType">
-<option value="">Mealtype</option>
-<option value="breakfast">Breakfast</option>
-<option value="lunch">Lunch</option>
-<option value="dinner">Dinner</option>
-</select>
-<select name="cuisineType" [(ngModel)]="filter.cuisineType">
-    <option value="">Cuisinetype</option>
-    <option value="italian">Italian</option>
-    <option value="greek">Greek</option>
-</select>
-<select name="healthLabel" [(ngModel)]="filter.healthLabel">
-<option value="">Healthlabel</option>
-<option value="dairy-free">Dairy-Free</option>
-<option value="vegetarian">Vegetarian</option>
-<!-- dubbelkolla namn -->
-</select>
+    <select name="mealType" [(ngModel)]="filter.mealType">
+        <option value="">Mealtype</option>
+        <option value="breakfast">Breakfast</option>
+        <option value="lunch">Lunch</option>
+        <option value="dinner">Dinner</option>
+    </select>
+    <select name="cuisineType" [(ngModel)]="filter.cuisineType">
+        <option value="">Cuisinetype</option>
+        <option value="italian">Italian</option>
+        <option value="greek">Greek</option>
+    </select>
+    <select name="healthLabel" [(ngModel)]="filter.healthLabel">
+        <option value="">Healthlabel</option>
+        <option value="dairy-free">Dairy-Free</option>
+        <option value="vegetarian">Vegetarian</option>
+        <!-- dubbelkolla namn -->
+    </select>
 </div>
-<button type="button" (click)="searchRecipe()">Get Recipes</button>

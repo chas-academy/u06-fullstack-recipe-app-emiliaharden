@@ -17,12 +17,12 @@ import { FilterRecipes } from '../../interfaces/filter-recipes';
 export class RecipesComponent {
   recipes?: Recipe[];
 
-  filter: FilterRecipes ={
+  filter: FilterRecipes = {
     searchterm: '',
     mealType: '',
     healthLabel: '',
     cuisineType: '',
-}
+  }
 
   constructor(private recipeService: RecipeService) { }
 

@@ -1,5 +1,5 @@
 export interface FilterRecipes {
-    mealType: string, 
+    mealType: string,
     cuisineType: string,
     healthLabel: string,
     searchterm: string,
