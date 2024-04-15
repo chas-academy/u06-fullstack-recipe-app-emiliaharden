@@ -24,8 +24,7 @@ export class AuthService {
   });
   loggedIn$ = this.loggedIn.asObservable();
 
-  //render address här nere, denna verkar ej fungera.
-  private baseUrl = 'http://127.0.0.1:8000/api/';
+  private baseUrl = 'https://u06-fullstack-recipe-app-emiliaharden.onrender.com/';
 
   private httpOptions = {
     headers: new HttpHeaders({
