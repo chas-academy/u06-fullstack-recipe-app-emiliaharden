@@ -1,6 +1,18 @@
 <p>login works!</p>
 
-<button (click)="login()">Login user</button>
-<button (click)="logout()">Logout user</button>
+@if (form) {
+<form [formGroup]="form" (ngSubmit)="login()">
+    <div>
+        <label>Email</label>
+        <input type="text" id="email" formControlName="email" class="border-2">
+    </div>
+    <div>
+        <label>Password</label>
+        <input type="password" id="password" formControlName="password" class="border-2">
+    </div>
 
-<!-- Här ska det läggas en logout. -->
+    <button type="submit">Login</button>
+</form>
+}
+
+<button (click)="logout()">Logout</button>
