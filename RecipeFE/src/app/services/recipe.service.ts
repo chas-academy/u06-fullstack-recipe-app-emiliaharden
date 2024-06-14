@@ -1,16 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { FilterRecipes } from '../interfaces/filter-recipes';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipeService {
-
   private baseUrl = 'https://api.edamam.com/api/recipes/v2?type=public';
-  private app_key = '16555b91856f1cea4a19133db6eb6e06';
-  private app_id = '677e757b';
+  private app_key = environment.API_KEY;
+  private app_id = environment.API_ID;
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -21,34 +20,45 @@ export class RecipeService {
 
   constructor(private http: HttpClient) { }
 
-  // getRecipes(searchterm = "Chicken", cuisineType="British", mealType="Dinner"): Observable<any> {
-  //   let url = this.baseUrl + "&q=" + searchterm + "&app_id=" + this.app_id + "&app_key=" + this.app_key + "&cuisine_type=" + cuisineType + "&mealType=" + mealType;
-  //   return this.http.get<any>(url, this.httpOptions);
-  // }
-
-  getRecipes(filter: FilterRecipes): Observable<any> {
-    let url = `${this.baseUrl}&app_id=${this.app_id}&app_key=${this.app_key}`
-    if (filter.searchterm) {
-      url += `&q=${filter.searchterm}`
-    }
-    if (filter.healthLabel) {
-      url += `&health=${filter.healthLabel}`
-    }
-    if (filter.cuisineType) {
-      url += `&cuisine_type=${filter.cuisineType}`
-    }
-    if (filter.mealType) {
-      url += `&meal_type=${filter.mealType}`
-    }
-    url = encodeURI(url);
-    return this.http.get(url, this.httpOptions);
-  }
-
-
-  getRecipe(recipeId: string): Observable<any> {
-    let recipeUrl = `https://api.edamam.com/api/recipes/v2/`;
-    let url = `${recipeUrl}${recipeId}?type=public&app_id=${this.app_id}&app_key=${this.app_key}`;
+  getAllRecipes(defaultQuery: string): Observable<any> {
+    const url = `${this.baseUrl}&q=${defaultQuery}&app_id=${this.app_id}&app_key=${this.app_key}`;
     return this.http.get<any>(url, this.httpOptions);
   }
 
+  getRecipes(searchterm: string, mealTypes: string[], cuisineTypes: string[], healthLabels: string[]): Observable<any> {    
+    let queryParams = '';
+
+    if (searchterm) {
+      queryParams += `&q=${encodeURIComponent(searchterm)}`;
+    }
+    if (mealTypes.length > 0) {
+      const encodedMealTypes = mealTypes.map(type => encodeURIComponent(type));
+      queryParams += `&mealType=${encodedMealTypes.join(',')}`;
+    }
+    if (cuisineTypes.length > 0) {
+      const encodedCuisineTypes = cuisineTypes.map(type => encodeURIComponent(type));
+      queryParams += `&cuisineType=${encodedCuisineTypes.join(',')}`;
+    }
+    if (healthLabels.length > 0) {
+      const encodedHealthLabels = healthLabels.map(label => encodeURIComponent(label));
+      queryParams += `&health=${encodedHealthLabels.join(',')}`;
+    }
+
+    const url = `${this.baseUrl}${queryParams}&app_id=${this.app_id}&app_key=${this.app_key}`;
+
+    return this.http.get<any>(url, this.httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  getRecipe(recipeId: string): Observable<any> {
+    const recipeUrl = `https://api.edamam.com/api/recipes/v2/`;
+    const url = `${recipeUrl}${recipeId}?type=public&app_id=${this.app_id}&app_key=${this.app_key}`;
+    return this.http.get<any>(url, this.httpOptions);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.error('An error occurred:', error);
+    return throwError(() => new Error('Something bad happened: please try again later.'));
+  }
 }

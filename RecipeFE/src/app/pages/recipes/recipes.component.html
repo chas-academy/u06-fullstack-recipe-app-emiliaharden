@@ -1,38 +1,65 @@
 <p>recipes works!</p>
 
-
-<input type="text" [(ngModel)]="filter.searchterm">
-<button type="button" (click)="searchRecipe()">Get Recipes</button>
-
-
-
-@for(recipe of recipes; track recipe){
-<article>
-    <h3>{{recipe.label}}</h3>
-    <img src="{{recipe.image}}" width="200" />
-    <p>Time to cook: {{recipe.totalTime}}</p>
-    <p><a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">Go to recipe</a></p>
-</article>
-} @empty {<p>There are no recipes...</p>}
-
+<form (ngSubmit)="searchRecipe()">
+  <input
+    class="border-2"
+    type="text"
+    name="searchterm"
+    [(ngModel)]="searchterm"
+    placeholder="Search"
+    required
+  />
+</form>
 
 <div>
+  <div class="p-4">
+    <label for="mealType">Meal type:</label>
+    <select id="mealType" multiple (change)="updateSelectedMealTypes($event)">
+      <option
+        *ngFor="let type of mealTypes"
+        [value]="type"
+        [selected]="selectedMealTypes.includes(type)"
+      >
+        {{ type }}
+      </option>
+    </select>
+  </div>
 
-    <select name="mealType" [(ngModel)]="filter.mealType">
-        <option value="">Mealtype</option>
-        <option value="breakfast">Breakfast</option>
-        <option value="lunch">Lunch</option>
-        <option value="dinner">Dinner</option>
+  <div class="p-4">
+    <label for="cuisineType">Cuisine type:</label>
+    <select id="cuisineType" multiple (change)="updateSelectedCuisineTypes($event)">
+      <option
+        *ngFor="let type of cuisineTypes"
+        [value]="type"
+        [selected]="selectedCuisineTypes.includes(type)"
+      >
+        {{ type }}
+      </option>
     </select>
-    <select name="cuisineType" [(ngModel)]="filter.cuisineType">
-        <option value="">Cuisinetype</option>
-        <option value="italian">Italian</option>
-        <option value="greek">Greek</option>
+  </div>
+
+  <div class="p-4">
+    <label for="healthLabel">Allergies:</label>
+    <select id="healthLabel" multiple (change)="updateSelectedHealthLabels($event)">
+      <option
+        *ngFor="let label of healthLabels"
+        [value]="label"
+        [selected]="selectedHealthLabels.includes(label)"
+      >
+        {{ label }}
+      </option>
     </select>
-    <select name="healthLabel" [(ngModel)]="filter.healthLabel">
-        <option value="">Healthlabel</option>
-        <option value="dairy-free">Dairy-Free</option>
-        <option value="vegetarian">Vegetarian</option>
-        <!-- dubbelkolla namn -->
-    </select>
+  </div>
 </div>
+<button (click)="searchRecipe()">Get recipes</button>
+
+@if (recipes && recipes.length > 0) {
+  @for (recipe of recipes; track recipe) {
+    <article>
+      <h3 class="text-3xl font-bold underline">{{ recipe.label }}</h3>
+      <img src="{{ recipe.image }}" alt="Recipe image" />
+      <p>{{ recipe.totalTime }}</p>
+      <a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">View recipe</a>
+    </article>
+  }
+}
