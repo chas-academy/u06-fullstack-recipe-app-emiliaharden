@@ -1,24 +1,19 @@
-<!-- <p>recipe works!</p>
-
-
-<div *ngIf="recipe" recipe="recipe">
-<h2>{{ recipe.recipe.label }}</h2>
-<img src="{{ recipe.recipe.images.SMALL.url }}" alt="RecipeImage">
-<p>Time to cook: {{ recipe.recipe.totalTime }}</p>
-@for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine){
-    <li>{{ ingredientLine }}</li>
-}
-
-</div> -->
-@if (recipe) {
-    <div>
-    <h2>{{ recipe.recipe.label }}</h2>
-    <img src="{{ recipe.recipe.images.SMALL.url }}" alt="Recipe image">
-    <p>{{ recipe.recipe.totalTime }}</p>
-    @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
-        <li>{{ ingredientLine }}</li>
-        }
-</div>
-} @else {
-<p>Loading recipe...</p>
-}
+<div class="container mx-auto p-4 text-center">
+    <!-- <p class="text-xl font-semibold mb-4">Recipe works!</p> -->
+    <!-- @if (recipe) { -->
+    @if (recipe) {
+      <div class="border rounded-lg shadow-md p-6 max-w-md mx-auto">
+        <h2 class="text-2xl font-bold mb-4">{{ recipe.recipe.label }}</h2>
+        <img class="rounded-md mb-4 w-full h-auto" src="{{ recipe.recipe.images.SMALL.url }}" alt="Recipe image">
+        <p class="text-gray-600 mb-4">Time to cook: {{ recipe.recipe.totalTime }} mins</p>
+        <ul class="list-disc list-inside text-left">
+          @for (ingredientLine of recipe.recipe.ingredientLines; track ingredientLine) {
+            <li class="ml-4 mb-2">{{ ingredientLine }}</li>
+          }
+        </ul>
+      </div>
+    } @else {
+      <p class="text-red-500">Loading recipe...</p>
+    }
+  </div>
+  

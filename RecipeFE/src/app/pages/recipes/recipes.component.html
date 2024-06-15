@@ -1,65 +1,75 @@
-<p>recipes works!</p>
+<div class="container mx-auto p-4">
+  <!-- <p class="text-xl font-semibold mb-4">Recipes works!</p> -->
 
-<form (ngSubmit)="searchRecipe()">
-  <input
-    class="border-2"
-    type="text"
-    name="searchterm"
-    [(ngModel)]="searchterm"
-    placeholder="Search"
-    required
-  />
-</form>
+  <form (ngSubmit)="searchRecipe()" class="mb-6">
+    <input
+      class="border-2 border-gray-300 rounded w-full p-2"
+      type="text"
+      name="searchterm"
+      [(ngModel)]="searchterm"
+      placeholder="Search"
+      required
+    />
+  </form>
 
-<div>
-  <div class="p-4">
-    <label for="mealType">Meal type:</label>
-    <select id="mealType" multiple (change)="updateSelectedMealTypes($event)">
-      <option
-        *ngFor="let type of mealTypes"
-        [value]="type"
-        [selected]="selectedMealTypes.includes(type)"
-      >
-        {{ type }}
-      </option>
-    </select>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="p-4 border rounded shadow">
+      <label for="mealType" class="block text-lg font-medium mb-2">Meal type:</label>
+      <select id="mealType" multiple class="w-full p-2 border rounded" (change)="updateSelectedMealTypes($event)">
+        <option
+          *ngFor="let type of mealTypes"
+          [value]="type"
+          [selected]="selectedMealTypes.includes(type)"
+        >
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+    <div class="p-4 border rounded shadow">
+      <label for="cuisineType" class="block text-lg font-medium mb-2">Cuisine type:</label>
+      <select id="cuisineType" multiple class="w-full p-2 border rounded" (change)="updateSelectedCuisineTypes($event)">
+        <option
+          *ngFor="let type of cuisineTypes"
+          [value]="type"
+          [selected]="selectedCuisineTypes.includes(type)"
+        >
+          {{ type }}
+        </option>
+      </select>
+    </div>
+
+    <div class="p-4 border rounded shadow">
+      <label for="healthLabel" class="block text-lg font-medium mb-2">Allergies:</label>
+      <select id="healthLabel" multiple class="w-full p-2 border rounded" (change)="updateSelectedHealthLabels($event)">
+        <option
+          *ngFor="let label of healthLabels"
+          [value]="label"
+          [selected]="selectedHealthLabels.includes(label)"
+        >
+          {{ label }}
+        </option>
+      </select>
+    </div>
   </div>
 
-  <div class="p-4">
-    <label for="cuisineType">Cuisine type:</label>
-    <select id="cuisineType" multiple (change)="updateSelectedCuisineTypes($event)">
-      <option
-        *ngFor="let type of cuisineTypes"
-        [value]="type"
-        [selected]="selectedCuisineTypes.includes(type)"
-      >
-        {{ type }}
-      </option>
-    </select>
-  </div>
+  <button
+    (click)="searchRecipe()"
+    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
+  >
+    Get recipes
+  </button>
 
-  <div class="p-4">
-    <label for="healthLabel">Allergies:</label>
-    <select id="healthLabel" multiple (change)="updateSelectedHealthLabels($event)">
-      <option
-        *ngFor="let label of healthLabels"
-        [value]="label"
-        [selected]="selectedHealthLabels.includes(label)"
-      >
-        {{ label }}
-      </option>
-    </select>
-  </div>
-</div>
-<button (click)="searchRecipe()">Get recipes</button>
-
-@if (recipes && recipes.length > 0) {
-  @for (recipe of recipes; track recipe) {
-    <article>
-      <h3 class="text-3xl font-bold underline">{{ recipe.label }}</h3>
-      <img src="{{ recipe.image }}" alt="Recipe image" />
-      <p>{{ recipe.totalTime }}</p>
-      <a [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">View recipe</a>
-    </article>
+  @if (recipes && recipes.length > 0) {
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      @for (recipe of recipes; track recipe) {
+        <article class="border rounded-lg shadow-md p-4">
+          <h3 class="text-3xl font-bold underline mb-2">{{ recipe.label }}</h3>
+          <img class="rounded-md mb-4 w-full" src="{{ recipe.image }}" alt="Recipe image" />
+          <p class="text-gray-600 mb-2">Total Time: {{ recipe.totalTime }} mins</p>
+          <a class="text-blue-500 hover:underline" [routerLink]="['/recipe', recipe.selfref | recipeidformatter]">View recipe</a>
+        </article>
+      }
+    </div>
   }
-}
+</div>
