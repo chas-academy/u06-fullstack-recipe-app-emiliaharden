@@ -1,4 +1,4 @@
 [build]
-  base = "Recipe-FE"
+  base = "RecipeFE"
   command = "ng build --configuration=production"
-  publish = "dist/Recipe-FE"
+  publish = "dist/RecipeFE"
