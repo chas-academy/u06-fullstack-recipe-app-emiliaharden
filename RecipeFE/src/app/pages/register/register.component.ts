@@ -35,7 +35,11 @@ export class RegisterComponent {
   }
 
   registerUser() {
+    // console.log('registerUser called');
+    console.log(this.form);
+    console.log(this.form?.valid);
     if (this.form?.valid) {
+      console.log('Form is valid');
       this.RegisterDetails.name = this.form.value.name;
       this.RegisterDetails.email = this.form.value.email;
       this.RegisterDetails.password = this.form.value.password;
@@ -43,8 +47,10 @@ export class RegisterComponent {
 
       this.auth.registerNewUser(this.RegisterDetails).subscribe({
         next: () => {
+          console.log('Registration successful');
           this.auth.loginUser(this.RegisterDetails).subscribe({
             next: () => {
+              console.log('Login after registration is successful');
               this.router.navigate(['/profile'])
             }
           })

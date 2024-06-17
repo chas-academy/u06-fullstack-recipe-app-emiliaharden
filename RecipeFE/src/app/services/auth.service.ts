@@ -40,6 +40,7 @@ export class AuthService {
   }
 
   registerNewUser(registerDetails: RegisterDetails): Observable<any> {
+    console.log('Skicka register details:', registerDetails);
     return this.http.post<any>(this.baseUrl+'register', registerDetails, this.httpOptions).pipe(catchError(this.handleError),
     tap(result => {
       console.log('Registrering lyckades', result);
@@ -80,6 +81,7 @@ export class AuthService {
       }));
   }
   logoutUser() {
+    console.log('Logging out user');
     this.http
       .post<any>(this.baseUrl + 'logout', {}, this.httpOptions)
       .pipe(catchError(this.handleError))
@@ -115,6 +117,8 @@ export class AuthService {
       return throwError(() => new Error('Internal server error. Please try again later.'));
     } else if (error.status === 404) {
       return throwError(() => new Error('An error occurred during login. Please try again later:', error.error));
+    } else if (error.status === 404) {
+      return throwError(() => new Error('API endpoint not found. Please check the URL.'));
     } else {
       console.error(
         `Backend returned code: ${error.status}, body was: `, error.error
